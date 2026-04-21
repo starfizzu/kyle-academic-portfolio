@@ -1,1 +1,2 @@
-# kyle-academic-portfolio
+# Name: Kyle R. Cabrera
+# School: Universidad de Dagupan
