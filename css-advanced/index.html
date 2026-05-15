@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Advanced — Responsive Grid Layout</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="logo">🎨 CSSAdvanced</div>
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <nav class="site-nav">
+          <a href="#">Home</a>
+          <a href="#">Features</a>
+          <a href="#">Portfolio</a>
+          <a href="#">Blog</a>
+          <a href="#">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main">
+
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Responsive Design<br />with CSS Grid</h1>
+          <p>A fully responsive layout built mobile-first using CSS Grid and Media Queries.</p>
+          <div class="hero-buttons">
+            <a href="#" class="btn btn-primary">Get Started</a>
+            <a href="#" class="btn btn-outline">Learn More</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-number">12+</span>
+            <span class="stat-label">Projects Done</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">98%</span>
+            <span class="stat-label">Client Satisfaction</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">5yrs</span>
+            <span class="stat-label">Experience</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">40+</span>
+            <span class="stat-label">Happy Clients</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="features">
+        <h2 class="section-title">Features</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📱</div>
+            <h3>Mobile First</h3>
+            <p>Designed for small screens and scaled up gracefully to tablet and desktop.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔲</div>
+            <h3>CSS Grid</h3>
+            <p>Flexible multi-column layouts that reorganize cleanly across breakpoints.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📐</div>
+            <h3>Media Queries</h3>
+            <p>Targeted breakpoints at 768px and 1024px for tablet and desktop views.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✏️</div>
+            <h3>Relative Units</h3>
+            <p>Uses rem, %, vw, and vh for fluid, scalable sizing across all devices.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>Clean Design</h3>
+            <p>Minimal and modern UI with consistent spacing, color, and typography.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>No Frameworks</h3>
+            <p>Pure HTML and CSS only — no libraries or external dependencies.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="portfolio">
+        <h2 class="section-title">Portfolio</h2>
+        <div class="portfolio-grid">
+          <div class="portfolio-card card-wide">
+            <div class="portfolio-label">Featured</div>
+            <h3>E-Commerce Dashboard</h3>
+            <p>Full-stack admin panel with data visualization and responsive tables.</p>
+          </div>
+          <div class="portfolio-card">
+            <h3>Blog Platform</h3>
+            <p>Content-first layout with fluid typography and dark mode support.</p>
+          </div>
+          <div class="portfolio-card">
+            <h3>Landing Page</h3>
+            <p>High-converting landing page with animations and mobile optimization.</p>
+          </div>
+          <div class="portfolio-card">
+            <h3>Portfolio Site</h3>
+            <p>Personal showcase with CSS Grid masonry and smooth transitions.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="blog">
+        <h2 class="section-title">Latest Posts</h2>
+        <div class="blog-grid">
+          <article class="blog-card">
+            <div class="blog-tag">CSS</div>
+            <h3>Mastering CSS Grid in 2025</h3>
+            <p>Deep dive into grid-template-areas, auto-fit, and minmax functions.</p>
+            <span class="blog-date">April 10, 2025</span>
+          </article>
+          <article class="blog-card">
+            <div class="blog-tag">Design</div>
+            <h3>Mobile-First Is Not Optional</h3>
+            <p>Why building for small screens first leads to better overall products.</p>
+            <span class="blog-date">April 3, 2025</span>
+          </article>
+          <article class="blog-card">
+            <div class="blog-tag">Tips</div>
+            <h3>Relative Units Explained</h3>
+            <p>When to use rem vs em vs % vs vw for truly responsive typography.</p>
+            <span class="blog-date">March 28, 2025</span>
+          </article>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">🎨 CSSAdvanced</div>
+          <p>Responsive layouts built with pure HTML and CSS.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Navigation</h4>
+          <a href="#">Home</a>
+          <a href="#">Features</a>
+          <a href="#">Portfolio</a>
+          <a href="#">Blog</a>
+        </div>
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <a href="#">MDN Web Docs</a>
+          <a href="#">CSS Tricks</a>
+          <a href="#">Can I Use</a>
+        </div>
+        <div class="footer-links">
+          <h4>Contact</h4>
+          <a href="#">hello@cssadvanced.dev</a>
+          <a href="#">GitHub</a>
+          <a href="#">LinkedIn</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 CSSAdvanced. All rights reserved.</p>
+      </div>
+    </footer>
+
+  </body>
+</html>
