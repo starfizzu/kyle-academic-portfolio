@@ -1,0 +1,61 @@
+-- Step 1: Calculate Basic Aggregations
+-- This query calculates total quantity, average price, and total revenue.
+SELECT
+    SUM(quantity) AS total_quantity,
+    AVG(unit_price) AS average_unit_price,
+    SUM(quantity * unit_price) AS total_revenue
+FROM sales;
+
+--------------------------------------------------
+
+-- Step 2: Group Sales by Region
+-- This query calculates total revenue for each region.
+SELECT
+    region,
+    SUM(quantity * unit_price) AS total_revenue
+FROM sales
+GROUP BY region;
+
+--------------------------------------------------
+
+-- Step 3: Group Sales by Region and Product
+-- This query shows revenue per product in each region.
+SELECT
+    region,
+    product_id,
+    SUM(quantity * unit_price) AS total_revenue
+FROM sales
+GROUP BY region, product_id
+ORDER BY region, product_id;
+
+--------------------------------------------------
+
+-- Step 4: Running Total of Revenue by Region
+-- This query calculates cumulative revenue over time per region.
+SELECT
+    sale_date,
+    region,
+    SUM(quantity * unit_price) AS daily_revenue,
+    SUM(SUM(quantity * unit_price)) OVER (
+        PARTITION BY region ORDER BY sale_date
+    ) AS running_total_revenue
+FROM sales
+GROUP BY sale_date, region
+ORDER BY region, sale_date;
+
+--------------------------------------------------
+
+-- Step 5: Moving Average of Revenue
+-- This query calculates a 3-day moving average of revenue per region.
+SELECT
+    sale_date,
+    region,
+    SUM(quantity * unit_price) AS daily_revenue,
+    AVG(SUM(quantity * unit_price)) OVER (
+        PARTITION BY region
+        ORDER BY sale_date
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ) AS moving_average_revenue
+FROM sales
+GROUP BY sale_date, region
+ORDER BY region, sale_date;
