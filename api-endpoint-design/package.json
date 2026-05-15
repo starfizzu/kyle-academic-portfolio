@@ -1,0 +1,17 @@
+{
+  "name": "online-store-api",
+  "version": "1.0.0",
+  "description": "RESTful API for an Online Store",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
