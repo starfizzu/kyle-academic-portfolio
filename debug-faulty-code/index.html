@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debug Faulty Code</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Bebas+Neue&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111214;
+      --surface: #18191d;
+      --surface2: #1f2025;
+      --border: #2c2d35;
+      --text: #dcdde8;
+      --muted: #5a5b6e;
+      --red: #ff4c4c;
+      --green: #39d98a;
+      --yellow: #ffc94d;
+      --blue: #4da6ff;
+      --orange: #ff8c4b;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 28px 40px;
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+    }
+
+    header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      letter-spacing: 2px;
+      color: var(--text);
+    }
+
+    header .subtitle {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      padding: 16px 40px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      padding: 4px 12px;
+      border-radius: 3px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge-syntax { background: rgba(255,76,76,0.15); color: var(--red); border: 1px solid var(--red); }
+    .badge-runtime { background: rgba(255,140,75,0.15); color: var(--orange); border: 1px solid var(--orange); }
+    .badge-logical { background: rgba(255,201,77,0.15); color: var(--yellow); border: 1px solid var(--yellow); }
+    .badge-pass { background: rgba(57,217,138,0.15); color: var(--green); border: 1px solid var(--green); }
+
+    .console-bar {
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .console-bar span { font-size: 0.75rem; color: var(--muted); }
+
+    #run-btn {
+      background: var(--green);
+      color: #0a1a12;
+      border: none;
+      border-radius: 3px;
+      padding: 6px 18px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: opacity 0.15s;
+    }
+
+    #run-btn:hover { opacity: 0.8; }
+
+    #console-output {
+      background: #0d0e10;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 0.72rem;
+      color: var(--green);
+      max-height: 120px;
+      overflow-y: auto;
+      flex: 1;
+      white-space: pre;
+      line-height: 1.7;
+    }
+
+    main {
+      padding: 32px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      max-width: 1100px;
+    }
+
+    .snippet-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .snippet-card.tested { border-color: var(--green); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+
+    .snippet-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: var(--muted);
+      min-width: 28px;
+    }
+
+    .card-header h3 {
+      flex: 1;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .error-type-badge {
+      font-size: 0.65rem;
+      padding: 3px 10px;
+      border-radius: 3px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .code-pane {
+      padding: 18px 20px;
+      border-right: 1px solid var(--border);
+    }
+
+    .code-pane:last-child { border-right: none; }
+
+    .pane-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pane-label.faulty { color: var(--red); }
+    .pane-label.fixed { color: var(--green); }
+
+    pre {
+      font-size: 0.78rem;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .line-bug {
+      background: rgba(255,76,76,0.12);
+      border-left: 3px solid var(--red);
+      padding-left: 8px;
+      margin-left: -8px;
+      display: block;
+      color: var(--red);
+    }
+
+    .line-fix {
+      background: rgba(57,217,138,0.1);
+      border-left: 3px solid var(--green);
+      padding-left: 8px;
+      margin-left: -8px;
+      display: block;
+      color: var(--green);
+    }
+
+    .line-normal { color: var(--muted); }
+
+    .card-footer {
+      border-top: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface2);
+    }
+
+    .bug-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .bug-desc strong { color: var(--yellow); }
+
+    .test-result {
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .result-pass { color: var(--green); }
+    .result-pending { color: var(--muted); }
+
+    @media (max-width: 700px) {
+      main, header, .badge-row, .console-bar { padding-left: 16px; padding-right: 16px; }
+      .card-body { grid-template-columns: 1fr; }
+      .code-pane { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Debug Faulty Code</h1>
+  <span class="subtitle">// 8 bugs identified, isolated & fixed</span>
+</header>
+
+<div class="badge-row">
+  <span class="badge badge-syntax">Syntax Errors</span>
+  <span class="badge badge-runtime">Runtime Errors</span>
+  <span class="badge badge-logical">Logical Errors</span>
+  <span class="badge badge-pass">All Tests Passing</span>
+</div>
+
+<div class="console-bar">
+  <button id="run-btn" onclick="runAll()">▶ Run All Tests</button>
+  <span>Open DevTools Console (F12) for full debug output</span>
+  <div id="console-output">// Click "Run All Tests" to execute script.js and see results here...</div>
+</div>
+
+<main>
+
+  <div class="snippet-card" id="card-1">
+    <div class="card-header">
+      <span class="snippet-num">01</span>
+      <h3>addNumbers — Missing Closing Parenthesis</h3>
+      <span class="error-type-badge badge-syntax">Syntax</span>
+    </div>
+    <div class="card-body">
+      <div class="code-pane">
+        <div class="pane-label faulty">✕ Faulty Code</div>
+        <pre><span class="line-normal">function addNumbers(a, b) {</span>
+<span class="line-normal">  return a + b;</span>
+<span class="line-bug">}</span>
+<span class="line-bug">const result = addNumbers(5, 10;</span>
+<span class="line-bug">                         ↑ missing )</span></pre>
+      </div>
+      <div class="code-pane">
+        <div class="pane-label fixed">✓ Fixed Code</div>
+        <pre><span class="line-normal">function addNumbers(a, b) {</span>
+<span class="line-normal">  return a + b;</span>
+<span class="line-normal">}</span>
+<span class="line-fix">const result = addNumbers(5, 10);</span>
+<span class="line-fix">console.log(result); // 15</span></pre>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="bug-desc">Bug: <strong>SyntaxError</strong> — closing parenthesis missing on function call</div>
+      <div class="test-result result-pending" id="r1">⏳ pending</div>
+    </div>
+  </div>
+
+  <div class="snippet-card" id="card-2">
+    <div class="card-header">
+      <span class="snippet-num">02</span>
+      <h3>getUserName — Accessing Property of Undefined</h3>
+      <span class="error-type-badge badge-runtime">Runtime</span>
+    </div>
+    <div class="card-body">
+      <div class="code-pane">
+        <div class="pane-label faulty">✕ Faulty Code</div>
+        <pre><span class="line-normal">function getUserName(user) {</span>
+<span class="line-bug">  return user.name;</span>
+<span class="line-bug">  // crashes if user is null</span>
+<span class="line-normal">}</span>
+<span class="line-bug">getUserName(null); // TypeError!</span></pre>
+      </div>
+      <div class="code-pane">
+        <div class="pane-label fixed">✓ Fixed Code</div>
+        <pre><span class="line-normal">function getUserName(user) {</span>
+<span class="line-fix">  if (!user || typeof user !== "object")</span>
+<span class="line-fix">    return "Unknown";</span>
+<span class="line-normal">  return user.name;</span>
+<span class="line-normal">}</span>
+<span class="line-fix">getUserName(null); // "Unknown"</span></pre>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="bug-desc">Bug: <strong>TypeError</strong> — no null check before accessing <code>.name</code></div>
+      <div class="test-result result-pending" id="r2">⏳ pending</div>
+    </div>
+  </div>
+
+  <div class="snippet-card" id="card-3">
+    <div class="card-header">
+      <span class="snippet-num">03</span>
+      <h3>isAdult — Assignment Instead of Comparison</h3>
+      <span class="error-type-badge badge-logical">Logical</span>
+    </div>
+    <div class="card-body">
+      <div class="code-pane">
+        <div class="pane-label faulty">✕ Faulty Code</div>
+        <pre><span class="line-normal">function isAdult(age) {</span>
+<span class="line-bug">  return age = 18;</span>
+<span class="line-bug">  // = assigns, doesn't compare!</span>
+<span class="line-normal">}</span>
+<span class="line-bug">isAdult(20); // always returns 18</span></pre>
+      </div>
+      <div class="code-pane">
+        <div class="pane-label fixed">✓ Fixed Code</div>
+        <pre><span class="line-normal">function isAdult(age) {</span>
+<span class="line-fix">  return age >= 18;</span>
+<span class="line-fix">  // >= compares correctly</span>
+<span class="line-normal">}</span>
+<span class="line-fix">isAdult(20); // true ✓</span></pre>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="bug-desc">Bug: <strong>LogicError</strong> — used <code>=</code> (assignment) instead of <code>&gt;=</code> (comparison)</div>
+      <div class="test-result result-pending" id="r3">⏳ pending</div>
+    </div>
+  </div>
+
+  <div class="snippet-card" id="card-4">
+    <div class="card-header">
+      <span class="snippet-num">04</span>
+      <h3>sumUpTo — Off-By-One Infinite Loop</h3>
+      <span class="error-type-badge badge-runtime">Runtime</span>
+    </div>
+    <div class="card-body">
+      <div class="code-pane">
+        <div class="pane-label faulty">✕ Faulty Code</div>
+        <pre><span class="line-normal">function sumUpTo(n) {</span>
+<span class="line-normal">  let total = 0;</span>
+<span class="line-bug">  for (let i = 1; i = n; i++) {</span>
+<span class="line-bug">    // i = n is always truthy!</span>
+<span class="line-normal">    total += i;</span>
+<span class="line-normal">  }</span>
+<span class="line-normal">  return total;</span>
+<span class="line-normal">}</span></pre>
+      </div>
+      <div class="code-pane">
+        <div class="pane-label fixed">✓ Fixed Code</div>
+        <pre><span class="line-normal">function sumUpTo(n) {</span>
+<span class="line-normal">  let total = 0;</span>
+<span class="line-fix">  for (let i = 1; i &lt;= n; i++) {</span>
+<span class="line-fix">    // &lt;= gives correct exit condition</span>
+<span class="line-normal">    total += i;</span>
+<span class="line-normal">  }</span>
+<span class="line-normal">  return total;</span>
+<span class="line-normal">}</span></pre>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="bug-desc">Bug: <strong>InfiniteLoop</strong> — loop condition <code>i = n</code> never becomes false</div>
+      <div class="test-result result-pending" id="r4">⏳ pending</div>
+    </div>
+  </div>
+
+  <div class="snippet-card" id="card-5">
+    <div class="card-header">
+      <span class="snippet-num">05</span>
+      <h3>greetUser — Undefined Variable Reference</h3>
+      <span class="error-type-badge badge-syntax">Syntax</span>
+    </div>
+    <div class="card-body">
+      <div class="code-pane">
+        <div class="pane-label faulty">✕ Faulty Code</div>
+        <pre><span class="line-normal">function greetUser(name) {</span>
+<span class="line-bug">  const message = "Hello, " + nme + "!";</span>
+<span class="line-bug">  //                          ↑ typo!</span>
+<span class="line-normal">  return message;</span>
+<span class="line-normal">}</span>
+<span class="line-bug">greetUser("Maria"); // ReferenceError!</span></pre>
+      </div>
+      <div class="code-pane">
+        <div class="pane-label fixed">✓ Fixed Code</div>
+        <pre><span class="line-normal">function greetUser(name) {</span>
+<span class="line-fix">  const message = "Hello, " + name + "!";</span>
+<span class="line-fix">  //                          ↑ fixed</span>
+<span class="line-normal">  return message;</span>
+<span class="line-normal">}</span>
+<span class="line-fix">greetUser("Maria"); // "Hello, Maria!"</span></pre>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="bug-desc">Bug: <strong>ReferenceError</strong> — <code>nme</code> is a typo; variable is named <code>name</code></div>
+      <div class="test-result result-pending" id="r5">⏳ pending</div>
+    </div>
+  </div>
+
+  <div class="snippet-card" id="card-6">
+    <div class="card-header">
+      <span class="snippet-num">06</span>
+      <h3>getFirstThree — Wrong Array Method</h3>
+      <span class="error-type-badge badge-logical">Logical</span>
+    </div>
+    <div class="card-body">
+      <div class="code-pane">
+        <div class="pane-label faulty">✕ Faulty Code</div>
+        <pre><span class="line-normal">function getFirstThree(arr) {</span>
+<span class="line-bug">  return arr.splice(0, 3);</span>
+<span class="line-bug">  // splice mutates original array!</span>
+<span class="line-normal">}</span>
+<span class="line-bug">// original array is now destroyed</span></pre>
+      </div>
+      <div class="code-pane">
+        <div class="pane-label fixed">✓ Fixed Code</div>
+        <pre><span class="line-normal">function getFirstThree(arr) {</span>
+<span class="line-fix">  if (!Array.isArray(arr)) return [];</span>
+<span class="line-fix">  return arr.slice(0, 3);</span>
+<span class="line-fix">  // slice returns copy, original safe</span>
+<span class="line-normal">}</span>
+<span class="line-fix">// [10, 20, 30] ✓</span></pre>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="bug-desc">Bug: <strong>LogicError</strong> — <code>splice()</code> mutates original; use <code>slice()</code> instead</div>
+      <div class="test-result result-pending" id="r6">⏳ pending</div>
+    </div>
+  </div>
+
+  <div class="snippet-card" id="card-7">
+    <div class="card-header">
+      <span class="snippet-num">07</span>
+      <h3>safeDivide — Division by Zero</h3>
+      <span class="error-type-badge badge-runtime">Runtime</span>
+    </div>
+    <div class="card-body">
+      <div class="code-pane">
+        <div class="pane-label faulty">✕ Faulty Code</div>
+        <pre><span class="line-normal">function safeDivide(a, b) {</span>
+<span class="line-bug">  return a / b;</span>
+<span class="line-bug">  // returns Infinity if b === 0</span>
+<span class="line-normal">}</span>
+<span class="line-bug">safeDivide(10, 0); // Infinity!</span></pre>
+      </div>
+      <div class="code-pane">
+        <div class="pane-label fixed">✓ Fixed Code</div>
+        <pre><span class="line-normal">function safeDivide(a, b) {</span>
+<span class="line-fix">  if (b === 0) {</span>
+<span class="line-fix">    console.error("Division by zero");</span>
+<span class="line-fix">    return null;</span>
+<span class="line-fix">  }</span>
+<span class="line-normal">  return a / b;</span>
+<span class="line-normal">}</span>
+<span class="line-fix">safeDivide(10, 0); // null ✓</span></pre>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="bug-desc">Bug: <strong>RuntimeError</strong> — no guard against <code>b === 0</code>, produces <code>Infinity</code></div>
+      <div class="test-result result-pending" id="r7">⏳ pending</div>
+    </div>
+  </div>
+
+  <div class="snippet-card" id="card-8">
+    <div class="card-header">
+      <span class="snippet-num">08</span>
+      <h3>calculateTotal — String Concat Instead of Addition</h3>
+      <span class="error-type-badge badge-logical">Logical</span>
+    </div>
+    <div class="card-body">
+      <div class="code-pane">
+        <div class="pane-label faulty">✕ Faulty Code</div>
+        <pre><span class="line-normal">function calculateTotal(price, tax) {</span>
+<span class="line-bug">  return price + tax;</span>
+<span class="line-bug">  // if inputs are strings:</span>
+<span class="line-bug">  // "100" + "20" = "10020" !</span>
+<span class="line-normal">}</span></pre>
+      </div>
+      <div class="code-pane">
+        <div class="pane-label fixed">✓ Fixed Code</div>
+        <pre><span class="line-normal">function calculateTotal(price, tax) {</span>
+<span class="line-fix">  const priceNum = Number(price);</span>
+<span class="line-fix">  const taxNum = Number(tax);</span>
+<span class="line-fix">  return priceNum + taxNum;</span>
+<span class="line-fix">  // 100 + 20 = 120 ✓</span>
+<span class="line-normal">}</span></pre>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="bug-desc">Bug: <strong>LogicError</strong> — string inputs cause concatenation instead of arithmetic</div>
+      <div class="test-result result-pending" id="r8">⏳ pending</div>
+    </div>
+  </div>
+
+</main>
+
+<script src="script.js"></script>
+<script>
+  function runAll() {
+    const out = document.getElementById('console-output');
+    const lines = [];
+
+    const checks = [
+      { id: 1, fn: () => window.snippetResults.addNumbers === 15, label: 'addNumbers(5,10) === 15' },
+      { id: 2, fn: () => window.snippetResults.getUserName.valid === 'Alice' && window.snippetResults.getUserName.invalid === 'Unknown', label: 'getUserName: valid + null guard' },
+      { id: 3, fn: () => window.snippetResults.isAdult.adult === true && window.snippetResults.isAdult.minor === false, label: 'isAdult(20)=true, isAdult(15)=false' },
+      { id: 4, fn: () => window.snippetResults.sumUpTo === 15, label: 'sumUpTo(5) === 15' },
+      { id: 5, fn: () => window.snippetResults.greetUser === 'Hello, Maria!', label: 'greetUser("Maria") === "Hello, Maria!"' },
+      { id: 6, fn: () => JSON.stringify(window.snippetResults.getFirstThree) === JSON.stringify([10,20,30]), label: 'getFirstThree → [10,20,30]' },
+      { id: 7, fn: () => window.snippetResults.safeDivide.normal === 5 && window.snippetResults.safeDivide.byZero === null, label: 'safeDivide: 5 and null' },
+      { id: 8, fn: () => window.snippetResults.calculateTotal === 120, label: 'calculateTotal(100,20) === 120' },
+    ];
+
+    let passed = 0;
+    checks.forEach(({ id, fn, label }) => {
+      const ok = fn();
+      const el = document.getElementById('r' + id);
+      const card = document.getElementById('card-' + id);
+      if (ok) {
+        el.textContent = '✓ PASS';
+        el.className = 'test-result result-pass';
+        card.classList.add('tested');
+        passed++;
+        lines.push(`✓ PASS  — ${label}`);
+      } else {
+        el.textContent = '✕ FAIL';
+        el.className = 'test-result';
+        el.style.color = 'var(--red)';
+        lines.push(`✕ FAIL  — ${label}`);
+      }
+    });
+
+    lines.push('');
+    lines.push(`Results: ${passed}/${checks.length} tests passed`);
+    out.textContent = lines.join('\n');
+  }
+</script>
+
+</body>
+</html>
