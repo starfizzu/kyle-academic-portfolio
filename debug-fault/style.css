@@ -1,0 +1,132 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f0f2f8;
+  color: #1a1a2e;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+
+/* ── Header ── */
+header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.4rem; }
+header p  { color: #555; font-size: 0.95rem; }
+kbd {
+  background: #e2e8f0;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.85rem;
+}
+
+/* ── Layout ── */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Bug Card ── */
+.bug-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border-left: 5px solid #6366f1;
+}
+
+.bug-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+}
+.bug-header h2 { font-size: 1.05rem; font-weight: 600; }
+
+/* ── Badges ── */
+.badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.badge.syntax  { background: #fef3c7; color: #92400e; }
+.badge.runtime { background: #fee2e2; color: #991b1b; }
+.badge.logical { background: #dbeafe; color: #1e3a8a; }
+
+/* ── Code Columns ── */
+.code-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 600px) { .code-cols { grid-template-columns: 1fr; } }
+
+.code-block { border-radius: 8px; overflow: hidden; }
+.code-block .label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+}
+.code-block.bad  .label { background: #fee2e2; color: #991b1b; }
+.code-block.good .label { background: #d1fae5; color: #065f46; }
+
+.code-block pre {
+  padding: 0.9rem 1rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+.code-block.bad  pre { background: #fff5f5; border: 1px solid #fecaca; }
+.code-block.good pre { background: #f0fdf4; border: 1px solid #bbf7d0; }
+
+code { font-family: "Fira Code", "Cascadia Code", "Courier New", monospace; }
+
+/* ── Explanation ── */
+.explanation {
+  font-size: 0.88rem;
+  color: #444;
+  line-height: 1.65;
+  margin-bottom: 0.75rem;
+}
+.explanation strong { color: #1a1a2e; }
+.explanation code {
+  background: #f1f5f9;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+/* ── Output Box ── */
+.output-box {
+  background: #1e1e2e;
+  color: #a6e3a1;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-family: monospace;
+  font-size: 0.83rem;
+  min-height: 32px;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  margin-top: 2.5rem;
+  font-size: 0.85rem;
+  color: #888;
+}
+footer code {
+  background: #e2e8f0;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
