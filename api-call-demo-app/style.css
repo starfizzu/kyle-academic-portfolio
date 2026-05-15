@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f4f1ec;
+  --surface: #ffffff;
+  --surface-alt: #f9f7f4;
+  --border: #e0dbd3;
+  --accent: #1a1a2e;
+  --accent-hover: #2d2d4e;
+  --highlight: #e8ff6b;
+  --text: #1a1a2e;
+  --muted: #8a8478;
+  --error-bg: #fff0f0;
+  --error-border: #f5c0c0;
+  --error-text: #c0392b;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --shadow: 0 2px 16px rgba(26, 26, 46, 0.07);
+  --shadow-hover: 0 6px 28px rgba(26, 26, 46, 0.13);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px 60px;
+}
+
+.app-wrapper {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.app-header {
+  text-align: center;
+  padding: 48px 0 16px;
+}
+
+.app-header h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2.8rem;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.subtitle {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.main-container {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+}
+
+#fetch-btn {
+  background-color: var(--accent);
+  color: var(--highlight);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px 40px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow);
+}
+
+#fetch-btn:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+#fetch-btn:active {
+  transform: translateY(0);
+}
+
+#fetch-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.hidden {
+  display: none !important;
+}
+
+.error-box {
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  color: var(--error-text);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.data-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.user-card {
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.user-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.user-card-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.user-card-username {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 400;
+  font-style: italic;
+}
+
+.user-card-divider {
+  height: 1px;
+  background-color: var(--border);
+  margin: 4px 0;
+}
+
+.user-card-info {
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-card-info span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-label {
+  font-weight: 500;
+  color: var(--text);
+  min-width: 48px;
+}
+
+.app-footer {
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.app-footer p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}

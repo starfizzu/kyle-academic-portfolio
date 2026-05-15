@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Fetch Lab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <header class="app-header">
+      <h1>API Fetch Lab</h1>
+      <p class="subtitle">Fetching data from JSONPlaceholder</p>
+    </header>
+
+    <main class="main-container">
+      <div class="controls">
+        <button id="fetch-btn">Fetch Users</button>
+      </div>
+
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <span>Loading data...</span>
+      </div>
+
+      <div id="error-box" class="error-box hidden"></div>
+
+      <div id="data-container" class="data-container"></div>
+    </main>
+
+    <footer class="app-footer">
+      <p>Data source: jsonplaceholder.typicode.com</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
