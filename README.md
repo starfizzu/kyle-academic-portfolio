@@ -1,16 +1,3 @@
-{
-  "name": "mongoose-schemas-lab",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "mongoose": "^9.5.0"
-  }
-}
+NAME: Kyle R. Cabrera
+
+SCHOOL: Universidad de Dagupan
