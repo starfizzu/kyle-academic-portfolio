@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Handling Demo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Event Handling Demo</h1>
+
+      <section class="card">
+        <h2>Click Event</h2>
+        <button id="clickBtn">Click Me</button>
+        <p id="clickOutput" class="output">Waiting for click...</p>
+      </section>
+
+      <section class="card">
+        <h2>Input & Change Events</h2>
+        <input type="text" id="textInput" placeholder="Type something..." />
+        <p id="inputOutput" class="output">Start typing...</p>
+        <select id="colorSelect">
+          <option value="">Select a color</option>
+          <option value="tomato">Red</option>
+          <option value="steelblue">Blue</option>
+          <option value="seagreen">Green</option>
+          <option value="goldenrod">Yellow</option>
+        </select>
+        <p id="changeOutput" class="output">No color selected.</p>
+      </section>
+
+      <section class="card">
+        <h2>Keyup Event</h2>
+        <input type="text" id="keyInput" placeholder="Press any key..." />
+        <p id="keyOutput" class="output">Last key pressed: none</p>
+      </section>
+
+      <section class="card">
+        <h2>Form Submit Event</h2>
+        <form id="demoForm">
+          <input type="text" id="nameInput" placeholder="Enter your name" required />
+          <button type="submit">Submit</button>
+        </form>
+        <p id="formOutput" class="output">Form not yet submitted.</p>
+      </section>
+
+      <section class="card">
+        <h2>Mouseover & Mouseout Events</h2>
+        <div id="hoverBox" class="hover-box">Hover over me</div>
+        <p id="hoverOutput" class="output">Mouse is outside.</p>
+      </section>
+
+      <section class="card">
+        <h2>Focus & Blur Events</h2>
+        <input type="text" id="focusInput" placeholder="Click to focus..." />
+        <p id="focusOutput" class="output">Input is not focused.</p>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
