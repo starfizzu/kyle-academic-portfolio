@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Fundamentals Lab</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #fafaf8;
+      --surface: #ffffff;
+      --border: #e4e0d8;
+      --accent: #2c5f2e;
+      --accent-light: #e8f4e8;
+      --text: #1c1c1c;
+      --muted: #6b6b6b;
+      --radius: 10px;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Georgia', serif;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    header {
+      background-color: var(--accent);
+      color: #ffffff;
+      padding: 32px 48px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      margin-top: 6px;
+      font-size: 0.95rem;
+      opacity: 0.8;
+      font-style: italic;
+    }
+
+    nav {
+      background-color: #1e4220;
+      padding: 0 48px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0;
+    }
+
+    nav ul li a {
+      display: block;
+      color: #cce8cc;
+      text-decoration: none;
+      padding: 14px 20px;
+      font-family: Arial, sans-serif;
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: background-color 0.2s;
+    }
+
+    nav ul li a:hover {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+
+    main {
+      max-width: 860px;
+      margin: 40px auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    section {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+    }
+
+    section h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent-light);
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      margin: 18px 0 8px;
+      color: #333;
+    }
+
+    p {
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 20px 0;
+    }
+
+    ol, ul {
+      padding-left: 24px;
+      margin-bottom: 12px;
+    }
+
+    ol li, ul li {
+      margin-bottom: 6px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    a:hover {
+      color: #1e4220;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--accent);
+    }
+
+    .radio-group,
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .radio-group label,
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--text);
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    input[type="submit"] {
+      background-color: var(--accent);
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 32px;
+      font-size: 0.95rem;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background-color 0.2s, transform 0.15s;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #1e4220;
+      transform: translateY(-1px);
+    }
+
+    article {
+      background-color: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 20px 24px;
+      margin-top: 16px;
+    }
+
+    article h3 {
+      color: var(--accent);
+      margin-top: 0;
+    }
+
+    footer {
+      background-color: #1c1c1c;
+      color: #aaaaaa;
+      text-align: center;
+      padding: 28px 48px;
+      margin-top: 40px;
+      font-family: Arial, sans-serif;
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: #cce8cc;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>HTML Fundamentals Lab</h1>
+    <p>A complete demonstration of core HTML elements and semantic structure.</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#basic-tags">Basic Tags</a></li>
+      <li><a href="#lists-links">Lists & Links</a></li>
+      <li><a href="#form">Form</a></li>
+      <li><a href="#semantic">Semantic HTML</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <section id="basic-tags">
+      <h2>Basic HTML Tags</h2>
+
+      <h1>Heading Level 1</h1>
+      <h2>Heading Level 2</h2>
+      <h3>Heading Level 3</h3>
+
+      <hr>
+
+      <p>This is the first paragraph demonstrating the use of the paragraph tag. It contains body text that explains basic content on the page.</p>
+      <p>This is a second paragraph. HTML paragraphs automatically add vertical spacing between blocks of text.<br>This line appears after a line break tag inside the same paragraph.</p>
+
+      <hr>
+
+      <p>Above and below this text are horizontal rule tags that create visible dividers between sections of content.</p>
+    </section>
+
+    <section id="lists-links">
+      <h2>Lists and Links</h2>
+
+      <h3>Ordered List</h3>
+      <ol>
+        <li>Learn HTML structure and boilerplate</li>
+        <li>Understand semantic elements</li>
+        <li>Practice building forms</li>
+        <li>Study CSS and layout</li>
+        <li>Build a complete web page</li>
+      </ol>
+
+      <h3>Unordered List</h3>
+      <ul>
+        <li>HTML — structure and content</li>
+        <li>CSS — styling and layout</li>
+        <li>JavaScript — interactivity and logic</li>
+        <li>Accessibility — inclusive design</li>
+      </ul>
+
+      <h3>Anchor Links</h3>
+      <p>Visit <a href="https://developer.mozilla.org" target="_blank">MDN Web Docs</a> for complete HTML reference documentation.</p>
+      <p>Visit <a href="https://www.w3schools.com" target="_blank">W3Schools</a> for beginner-friendly HTML tutorials and examples.</p>
+    </section>
+
+    <section id="form">
+      <h2>HTML Form</h2>
+
+      <form action="#" method="post">
+
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter a password">
+        </div>
+
+        <div class="form-group">
+          <label>Gender</label>
+          <div class="radio-group">
+            <label><input type="radio" name="gender" value="male"> Male</label>
+            <label><input type="radio" name="gender" value="female"> Female</label>
+            <label><input type="radio" name="gender" value="other"> Prefer not to say</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Interests</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="interest" value="html"> HTML & Structure</label>
+            <label><input type="checkbox" name="interest" value="css"> CSS & Design</label>
+            <label><input type="checkbox" name="interest" value="js"> JavaScript & Logic</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="submit" value="Submit Form">
+        </div>
+
+      </form>
+    </section>
+
+    <section id="semantic">
+      <h2>Semantic HTML</h2>
+      <p>The elements below demonstrate proper use of semantic tags that give meaning to page structure beyond simple visual layout.</p>
+
+      <article>
+        <h3>What Is Semantic HTML?</h3>
+        <p>Semantic HTML uses elements that describe their meaning to both the browser and the developer. Tags like <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;nav&gt;</code>, and <code>&lt;footer&gt;</code> communicate content purpose, which improves accessibility and search engine optimization.</p>
+      </article>
+
+      <article>
+        <h3>Why It Matters</h3>
+        <p>Screen readers, search engines, and other tools rely on semantic structure to understand and navigate web content. Using the correct elements ensures your page is accessible to all users, including those using assistive technology.</p>
+      </article>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>HTML Fundamentals Lab &mdash; Built with standard HTML5 &copy; 2025</p>
+    <p style="margin-top:6px;"><a href="https://developer.mozilla.org" target="_blank">MDN Web Docs</a></p>
+  </footer>
+
+</body>
+</html>
